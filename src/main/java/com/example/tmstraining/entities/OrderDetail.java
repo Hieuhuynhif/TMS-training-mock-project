@@ -1,9 +1,6 @@
 package com.example.tmstraining.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class OrderDetail {
@@ -13,11 +10,21 @@ public class OrderDetail {
 
     private int quantity;
 
+    @ManyToOne
+    private Order order;
+
+    @ManyToOne
+    private Item item;
+
     public int getId() {
         return id;
     }
 
     public int getQuantity() {
         return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

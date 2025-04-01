@@ -1,9 +1,6 @@
 package com.example.tmstraining.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.Date;
 
@@ -15,4 +12,30 @@ public class CartDetail {
 
     private int quantity;
     private Date dateAdded;
+
+    @ManyToOne
+    private Cart cart;
+
+    @ManyToOne
+    private Item item;
+
+    public int getId() {
+        return id;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public Date getDateAdded() {
+        return dateAdded;
+    }
+
+    public void setDateAdded(Date dateAdded) {
+        this.dateAdded = dateAdded;
+    }
 }

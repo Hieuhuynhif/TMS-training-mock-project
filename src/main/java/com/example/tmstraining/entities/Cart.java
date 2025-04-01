@@ -1,9 +1,8 @@
 package com.example.tmstraining.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 public class Cart {
@@ -12,8 +11,15 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
+    @OneToOne
+    private User user;
+
+    @OneToMany(mappedBy = "cart")
+    private List<CartDetail> cartDetails;
+
     public int getId() {
         return id;
     }
+
 
 }

@@ -1,11 +1,9 @@
 package com.example.tmstraining.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Order {
@@ -15,12 +13,20 @@ public class Order {
 
     private Date orderDate;
 
+    @OneToMany(mappedBy = "order")
+    private List<OrderDetail> orderDetails;
+
+    @ManyToOne
+    private User user;
+
     public int getId() {
         return id;
     }
+
     public Date getOrderDate() {
         return orderDate;
     }
+
     public void setOrderDate(Date orderDate) {
         this.orderDate = orderDate;
     }
