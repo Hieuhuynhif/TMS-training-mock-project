@@ -1,63 +1,43 @@
 package com.example.tmstraining.entities;
 
-import com.example.tmstraining.types.Role;
+import com.example.tmstraining.enums.Role;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 
 @Entity
-@Table(name = "user_table")
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+@Table(name = "user")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Size(min = 2, max = 10)
+    @NotNull
+    @NotEmpty
     private String username;
+
+    @Size(min = 2, max = 10)
+    @NotEmpty
+    @NotNull
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    @Max(15)
+    @NotNull
     private Role role;
 
-    @OneToOne(mappedBy = "user", optional = false)
-    private Cart cart;
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
-
-    public int getId() {
-        return id;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-
-    public Cart getCart() {
-        return cart;
-    }
-
-    public void setCart(Cart cart) {
-        this.cart = cart;
-    }
-
-
 }
