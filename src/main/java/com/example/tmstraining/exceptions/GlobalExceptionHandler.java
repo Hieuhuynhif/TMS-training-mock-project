@@ -1,18 +1,27 @@
 package com.example.tmstraining.exceptions;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(value = {
-            CartDetailsNotFoundException.class,
-            CustomerNotFoundException.class,
-            ItemNotFoundException.class
-    })
+    @ExceptionHandler({ConstraintViolationException.class})
+    public ResponseEntity<ErrorResponse> handleDataIntegrity(ConstraintViolationException ex) {
+        String message = ex.getConstraintName();
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setMessage(message);
+        errorResponse.setStatus(HttpStatus.BAD_REQUEST.value());
+        errorResponse.setError(HttpStatus.BAD_REQUEST.getReasonPhrase());
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({CartDetailsNotFoundException.class, CustomerNotFoundException.class, ItemNotFoundException.class})
     public ResponseEntity<ErrorResponse> handleNotFoundException(CartDetailsNotFoundException ex) {
         String message = ex.getMessage();
         ErrorResponse errorResponse = new ErrorResponse();
@@ -23,10 +32,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(value = {
-            EmptyCartException.class,
-            QuantityLessThanOneException.class
-    })
+    @ExceptionHandler({EmptyCartException.class, QuantityLessThanOneException.class, BadRequestException.class})
     public ResponseEntity<ErrorResponse> handleBadRequestException(EmptyCartException ex) {
         String message = ex.getMessage();
         ErrorResponse errorResponse = new ErrorResponse();
@@ -37,10 +43,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(value = {
-            PaymentFailureException.class,
-            IncorrectPasswordException.class
-    })
+    @ExceptionHandler({PaymentFailureException.class, IncorrectPasswordException.class})
     public ResponseEntity<ErrorResponse> handleUnauthorizedException(PaymentFailureException ex) {
         String message = ex.getMessage();
         ErrorResponse errorResponse = new ErrorResponse();
@@ -51,9 +54,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler(value = {
-            UserExistedException.class
-    })
+    @ExceptionHandler({UserExistedException.class})
     public ResponseEntity<ErrorResponse> handleForbiddenException(UserExistedException ex) {
         String message = ex.getMessage();
         ErrorResponse errorResponse = new ErrorResponse();
@@ -64,9 +65,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
     }
 
-    @ExceptionHandler(value = {
-            ItemCascadeDeleteError.class
-    })
+    @ExceptionHandler({ItemCascadeDeleteError.class})
     public ResponseEntity<ErrorResponse> handleInternalServerErrorException(ItemCascadeDeleteError ex) {
         String message = ex.getMessage();
         ErrorResponse errorResponse = new ErrorResponse();

@@ -17,15 +17,19 @@ public class StartupConfig {
     }
 
     @Bean
-    ApplicationRunner applicationRunner() {
+    public ApplicationRunner applicationRunner() {
         return (args) -> {
 
-            User admin = new User();
-            admin.setUsername("admin");
-            admin.setPassword("admin");
-            admin.setRole(Role.ROLE_ADMIN);
+            try {
+                User admin = new User();
+                admin.setUsername("admin");
+                admin.setPassword("admin");
+                admin.setRole(Role.ROLE_ADMIN);
 
-            userService.addUser(admin);
+                userService.addUser(admin);
+            } catch (Exception e) {
+                System.out.println(e.getMessage() + ": Can not create admin");
+            }
         };
     }
 }

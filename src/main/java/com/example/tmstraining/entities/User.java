@@ -2,7 +2,6 @@ package com.example.tmstraining.entities;
 
 import com.example.tmstraining.enums.Role;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -17,24 +16,23 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@Table(name = "user")
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Size(min = 2, max = 10)
+    @Size(min = 2, max = 20)
     @NotNull
     @NotEmpty
     private String username;
 
-    @Size(min = 2, max = 10)
+    @Size(min = 2, max = 255)
     @NotEmpty
     @NotNull
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Max(15)
     @NotNull
     private Role role;
 

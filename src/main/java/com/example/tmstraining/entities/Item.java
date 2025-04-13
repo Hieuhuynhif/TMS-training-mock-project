@@ -6,13 +6,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "item")
+@Table(name = "items")
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,11 +25,5 @@ public class Item {
     @Max(1000 * 1000 * 1000)
     @Min(0)
     private double price;
-
-    @OneToMany(mappedBy = "item")
-    private List<OrderDetails> listOrderDetails;
-
-    @OneToMany(mappedBy = "item")
-    private List<CartDetails> listCartDetails;
 
 }

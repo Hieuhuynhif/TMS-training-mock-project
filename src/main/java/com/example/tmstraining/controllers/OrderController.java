@@ -17,7 +17,7 @@ public class OrderController {
         return "Order added";
     }
 
-    @PutMapping("lastestOrder/{customerId")
+    @PutMapping("lastestOrder/{customerId}")
     public String findLastestOrder(@PathVariable String customerId) {
         return "Lastest order found";
     }
