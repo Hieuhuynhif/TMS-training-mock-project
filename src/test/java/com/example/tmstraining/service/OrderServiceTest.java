@@ -62,8 +62,8 @@ public class OrderServiceTest {
         List<CartDetails> mockListCartDetails = List.of(new CartDetails());
         cart1.setListCartDetails(mockListCartDetails);
         List<OrderDetails> mockListOrderDetails = List.of(new OrderDetails());
-        Mockito.when(orderRepository.save(mockOrder)).thenReturn(mockOrder);
-        Mockito.when(orderDetailsRepository.saveAll(mockListOrderDetails)).thenReturn(mockListOrderDetails);
+        Mockito.when(orderRepository.save(Mockito.any())).thenReturn(mockOrder);
+        Mockito.when(orderDetailsRepository.saveAll(Mockito.anyList())).thenReturn(mockListOrderDetails);
         Mockito.doNothing().when(cartDetailsRepository).deleteAllByCartId(cart1.getId());
 
         Order result = orderService.createOrder(customerId1);
