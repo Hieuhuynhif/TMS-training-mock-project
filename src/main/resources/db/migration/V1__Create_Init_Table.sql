@@ -34,7 +34,7 @@ CREATE TABLE order_details
 CREATE TABLE carts
 (
     id      INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    user_id INT,
+    user_id INT UNIQUE ,
     FOREIGN KEY (user_id) REFERENCES users
 );
 

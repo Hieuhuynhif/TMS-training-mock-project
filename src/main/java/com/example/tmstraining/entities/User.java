@@ -9,8 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 
 @Entity
 @NoArgsConstructor
@@ -36,6 +34,4 @@ public class User {
     @NotNull
     private Role role;
 
-    @OneToMany(mappedBy = "user")
-    private List<Order> orders;
 }

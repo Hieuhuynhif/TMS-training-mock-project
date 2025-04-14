@@ -1,5 +1,6 @@
 package com.example.tmstraining.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -26,13 +27,14 @@ public class CartDetails {
     private int quantity;
 
     @NotNull
-    private Date AddedDate;
+    private Date AddedDate = new Date();
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "item_id")
     private Item item;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "cart_id")
+    @JsonBackReference
     private Cart cart;
 }

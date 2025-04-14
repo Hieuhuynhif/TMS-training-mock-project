@@ -1,5 +1,6 @@
 package com.example.tmstraining.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,10 +19,11 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToMany(mappedBy = "cart", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "cart")
     private List<CartDetails> listCartDetails;
 
-    @OneToOne
+    @ManyToOne()
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
 }

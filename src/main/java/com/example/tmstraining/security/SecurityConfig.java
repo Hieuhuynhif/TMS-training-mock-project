@@ -1,9 +1,9 @@
 package com.example.tmstraining.security;
 
 import com.example.tmstraining.enums.Role;
-import com.example.tmstraining.security.filters.JwtFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,6 +28,7 @@ public class SecurityConfig {
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers("auth/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "api/items/**").hasAnyAuthority(Role.ROLE_CUSTOMER.name(), Role.ROLE_ADMIN.name())
                         .requestMatchers("api/items/**").hasAuthority(Role.ROLE_ADMIN.name())
                         .anyRequest().hasAuthority(Role.ROLE_CUSTOMER.name())
                 )
