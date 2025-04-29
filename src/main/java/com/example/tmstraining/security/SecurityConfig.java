@@ -28,8 +28,10 @@ public class SecurityConfig {
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers("auth/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "api/items/**").hasAnyAuthority(Role.ROLE_CUSTOMER.name(), Role.ROLE_ADMIN.name())
+                        .requestMatchers(HttpMethod.GET, "api/items/**").permitAll()
                         .requestMatchers("api/items/**").hasAuthority(Role.ROLE_ADMIN.name())
+                        .requestMatchers("api/orders/**")
+                        .hasAnyAuthority(Role.ROLE_ADMIN.name(), Role.ROLE_CUSTOMER.name())
                         .anyRequest().hasAuthority(Role.ROLE_CUSTOMER.name())
                 )
                 .exceptionHandling(exceptionHandling -> {
