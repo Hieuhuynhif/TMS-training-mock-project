@@ -3,10 +3,13 @@ package com.example.tmstraining.controller;
 import com.example.tmstraining.dtos.user.UserDTO;
 import com.example.tmstraining.entities.User;
 import com.example.tmstraining.service.UserService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("auth")
+@RequestMapping("api/auth")
 public class AuthenticationController {
 
     private final UserService userService;
@@ -15,8 +18,8 @@ public class AuthenticationController {
         this.userService = userService;
     }
 
-    @GetMapping("login")
-    public String login(@RequestBody User user) {
+    @PostMapping("login")
+    public UserDTO login(@RequestBody User user) {
         return userService.login(user);
     }
 

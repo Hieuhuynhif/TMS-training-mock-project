@@ -9,4 +9,5 @@ public class UserDTO {
     private long id;
     private String username;
     private Role role;
+    private String accessToken;
 }

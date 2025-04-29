@@ -20,20 +20,28 @@ public class UserService {
     private final CartRepository cartRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, CartRepository cartRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, CartRepository cartRepository,
+                       PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.cartRepository = cartRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
-    public String login(User user) {
+    public UserDTO login(User user) {
         User userDetails = userRepository.findByUsername(user.getUsername());
 
-        if (userDetails == null) {
+        if (userDetails == null || !passwordEncoder.matches(user.getPassword(), userDetails.getPassword())) {
             throw new IncorrectPasswordException();
         }
 
-        return JwtUtil.generateToken(UserMapper.INSTANCE.toDTO(userDetails));
+        String accessToken = JwtUtil.generateToken(UserMapper.INSTANCE.toDTO(userDetails));
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(userDetails.getId());
+        userDTO.setUsername(userDetails.getUsername());
+        userDTO.setRole(userDetails.getRole());
+        userDTO.setAccessToken(accessToken);
+
+        return userDTO;
     }
 
     @Transactional
