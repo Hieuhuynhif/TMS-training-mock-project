@@ -74,8 +74,9 @@ public class ItemServiceTest {
         Mockito.when(itemRepository.save(item1)).thenReturn(item1);
         Mockito.when(itemRepository.findById(2)).thenReturn(Optional.empty());
 
-        Assertions.assertEquals(item1, itemService.updateItem(item1));
-        Assertions.assertThrows(ItemNotFoundException.class, () -> itemService.updateItem(item2));
+        Assertions.assertEquals(item1, itemService.updateItem(item1.getId(), item1));
+        Assertions.assertThrows(ItemNotFoundException.class,
+                () -> itemService.updateItem(item2.getId(), item2));
     }
 
     @Test
@@ -91,11 +92,15 @@ public class ItemServiceTest {
         Assertions.assertEquals("Item deleted Successfully", itemService.deleteItem(item1.getId()));
 
         Mockito.when(itemRepository.findById(item2.getId())).thenReturn(Optional.empty());
-        Assertions.assertThrows(ItemNotFoundException.class, () -> itemService.deleteItem(item2.getId()));
+        Assertions.assertThrows(ItemNotFoundException.class,
+                () -> itemService.deleteItem(item2.getId()));
 
         Mockito.when(itemRepository.findById(item3.getId())).thenReturn(Optional.of(item3));
-        Mockito.when(cartDetailsRepository.findByItemId(item3.getId())).thenReturn(List.of(new CartDetails()));
-        Mockito.when(orderDetailRepository.findByItemId(item3.getId())).thenReturn(List.of(new OrderDetails()));
-        Assertions.assertThrows(ItemCascadeDeleteException.class, () -> itemService.deleteItem(item3.getId()));
+        Mockito.when(cartDetailsRepository.findByItemId(item3.getId()))
+                .thenReturn(List.of(new CartDetails()));
+        Mockito.when(orderDetailRepository.findByItemId(item3.getId()))
+                .thenReturn(List.of(new OrderDetails()));
+        Assertions.assertThrows(ItemCascadeDeleteException.class,
+                () -> itemService.deleteItem(item3.getId()));
     }
 }

@@ -1,6 +1,7 @@
 package com.example.tmstraining.security;
 
 import com.example.tmstraining.enums.Role;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -20,13 +21,12 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
+    private final VerifyConnectFilter verifyConnectFilter;
 
-    public SecurityConfig(JwtFilter jwtFilter) {
-        this.jwtFilter = jwtFilter;
-    }
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -35,17 +35,19 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(corsFilter(), JwtFilter.class)
+                .addFilterBefore(verifyConnectFilter, JwtFilter.class)
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers("api/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "api/items/**").permitAll()
-                        .requestMatchers("api/items/**").hasAuthority(Role.ROLE_ADMIN.name())
-                        .requestMatchers("api/orders/**")
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/items/**").permitAll()
+                        .requestMatchers("/api/items/**").hasAuthority(Role.ROLE_ADMIN.name())
+                        .requestMatchers("/api/orders/**")
                         .hasAnyAuthority(Role.ROLE_ADMIN.name(), Role.ROLE_CUSTOMER.name())
                         .anyRequest().hasAuthority(Role.ROLE_CUSTOMER.name())
                 )
                 .exceptionHandling(exceptionHandling -> {
                     exceptionHandling.accessDeniedHandler(ExceptionHandling.accessDeniedHandler());
-                    exceptionHandling.authenticationEntryPoint(ExceptionHandling.authenticationEntryPoint());
+                    exceptionHandling.authenticationEntryPoint(
+                            ExceptionHandling.authenticationEntryPoint());
 
                 });
 
@@ -58,7 +60,8 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("*"));
         configuration.setAllowedMethods(
-                Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Allow all common methods
+                Arrays.asList("GET", "POST", "PUT", "DELETE",
+                        "OPTIONS")); // Allow all common methods
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(false);
 

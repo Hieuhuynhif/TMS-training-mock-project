@@ -56,8 +56,8 @@ public class ItemControllerTest {
     public void updateItem() {
         Item testItem = new Item(1, "testItem", 232);
 
-        Mockito.when(itemService.updateItem(testItem)).thenReturn(testItem);
-        Item item = itemController.updateItem(testItem);
+        Mockito.when(itemService.updateItem(testItem.getId(), testItem)).thenReturn(testItem);
+        Item item = itemController.updateItem(testItem.getId(), testItem);
 
         Assertions.assertEquals(testItem, item);
     }

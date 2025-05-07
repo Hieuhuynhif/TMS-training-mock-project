@@ -2,7 +2,14 @@ package com.example.tmstraining.controller;
 
 import com.example.tmstraining.entities.Item;
 import com.example.tmstraining.service.ItemService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -30,9 +37,9 @@ public class ItemController {
         return itemService.createItem(item);
     }
 
-    @PutMapping("")
-    public Item updateItem(@RequestBody Item item) {
-        return itemService.updateItem(item);
+    @PutMapping("{itemId}")
+    public Item updateItem(@PathVariable int itemId, @RequestBody Item item) {
+        return itemService.updateItem(itemId, item);
     }
 
     @DeleteMapping("{itemId}")

@@ -19,7 +19,8 @@ public class ItemService {
     private final CartDetailsRepository cartDetailsRepository;
     private final OrderDetailsRepository orderDetailRepository;
 
-    public ItemService(ItemRepository itemRepository, CartDetailsRepository cartDetailsRepository, OrderDetailsRepository orderDetailRepository) {
+    public ItemService(ItemRepository itemRepository, CartDetailsRepository cartDetailsRepository,
+                       OrderDetailsRepository orderDetailRepository) {
         this.itemRepository = itemRepository;
         this.cartDetailsRepository = cartDetailsRepository;
         this.orderDetailRepository = orderDetailRepository;
@@ -42,8 +43,8 @@ public class ItemService {
         return itemRepository.save(item);
     }
 
-    public Item updateItem(Item item) {
-        itemRepository.findById(item.getId()).orElseThrow(ItemNotFoundException::new);
+    public Item updateItem(int itemId, Item item) {
+        itemRepository.findById(itemId).orElseThrow(ItemNotFoundException::new);
         return itemRepository.save(item);
     }
 
