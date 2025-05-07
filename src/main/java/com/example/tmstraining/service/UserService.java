@@ -27,10 +27,26 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @Transactional
     public UserDTO login(User user) {
+
         User userDetails = userRepository.findByUsername(user.getUsername());
 
-        if (userDetails == null || !passwordEncoder.matches(user.getPassword(), userDetails.getPassword())) {
+        if (user.getProvider() != null && user.getPassword() == null) {
+            if (userDetails == null) {
+                userDetails = new User();
+                userDetails.setUsername(user.getUsername());
+                userDetails.setPassword(passwordEncoder.encode(user.getProvider()));
+                userDetails.setRole(Role.ROLE_CUSTOMER);
+                User newUser = userRepository.save(userDetails);
+
+                Cart cart = new Cart();
+                cart.setUser(newUser);
+                cartRepository.save(cart);
+            }
+
+        } else if (userDetails == null ||
+                !passwordEncoder.matches(user.getPassword(), userDetails.getPassword())) {
             throw new IncorrectPasswordException();
         }
 

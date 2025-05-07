@@ -1,7 +1,14 @@
 package com.example.tmstraining.entities;
 
 import com.example.tmstraining.enums.Role;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -20,10 +27,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Size(min = 2, max = 20)
+    @Size(min = 2, max = 50)
     @NotNull
     @NotEmpty
     private String username;
+
+    private String provider;
 
     @Size(min = 2, max = 255)
     @NotEmpty
